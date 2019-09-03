@@ -77,12 +77,13 @@ namespace ImageChopper
                 foreach (var rect in rects)
                 {
                     path.AddRectangle(rect);
+                    gr.SetClip(path);
+                    gr.Clear(Color.White);
+                    gr.ResetClip();
                 }
 
 
-                gr.SetClip(path);
-                gr.Clear(Color.White);
-                gr.ResetClip();
+
             }
             return bm;
         }
@@ -393,7 +394,7 @@ namespace ImageChopper
                 confirmPerson = new ConfirmPerson();
 
                 confirmPerson.pictureBox1.Image = pictureBoxCurrent.Image;
-                confirmPerson.pictureBox1.Size = pictureBoxCurrent.Size;
+                //confirmPerson.pictureBox1.Size = pictureBoxCurrent.Size;
                 if (confirmPerson.ShowDialog() == DialogResult.Cancel)
                 {
                     MessageBox.Show("Fisierul " + currentImage.Filename + " nu a fost salvat, trebuie sa confirmati persoana!");
