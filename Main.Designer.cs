@@ -41,10 +41,10 @@
             this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.btnOpen = new System.Windows.Forms.Button();
             this.lblImgInfo = new System.Windows.Forms.Label();
             this.lblInfo = new System.Windows.Forms.Label();
             this.lblLog = new System.Windows.Forms.Label();
-            this.btnOpen = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCurrent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerFirst)).BeginInit();
             this.splitContainerFirst.Panel1.SuspendLayout();
@@ -205,6 +205,16 @@
             this.splitContainer1.SplitterDistance = 1009;
             this.splitContainer1.TabIndex = 2;
             // 
+            // btnOpen
+            // 
+            this.btnOpen.Location = new System.Drawing.Point(9, 203);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(183, 23);
+            this.btnOpen.TabIndex = 6;
+            this.btnOpen.Text = "Deschide imaginea modificata";
+            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
+            // 
             // lblImgInfo
             // 
             this.lblImgInfo.AutoSize = true;
@@ -237,22 +247,13 @@
             this.lblLog.TabIndex = 1;
             this.lblLog.Text = "log";
             // 
-            // btnOpen
-            // 
-            this.btnOpen.Location = new System.Drawing.Point(9, 203);
-            this.btnOpen.Name = "btnOpen";
-            this.btnOpen.Size = new System.Drawing.Size(183, 23);
-            this.btnOpen.TabIndex = 6;
-            this.btnOpen.Text = "Deschide imaginea modificata";
-            this.btnOpen.UseVisualStyleBackColor = true;
-            this.btnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.splitContainerFirst);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "frmMain";
             this.Text = "Image Chopper";

@@ -191,7 +191,7 @@ namespace ImageChopper
         private void WriteImageInfo()
         {
             var countSavedImages = images.Where(i => i.HasBeenSaved).Count();
-            lblInfo.Text = String.Format("{0}\nPersoana: {1}\nSalvata: {2}\nSalvata ca: {6}\nZoomFactor: {3}\nTotal imagini: {4}\nImagini procesate: {5}", currentImage.Filename, currentImage.Person, currentImage.HasBeenSaved, zoomFactor, images.Count, countSavedImages,currentImage.SaveFilePath);
+            lblInfo.Text = String.Format("{0}\nPersoana: {1}\nSalvata: {2}\nSalvata ca: {6}\nZoomFactor: {3}\nTotal imagini: {4}\nImagini procesate: {5}", currentImage.Filename, currentImage.Person, currentImage.HasBeenSaved, zoomFactor, images.Count, countSavedImages, currentImage.SaveFilePath);
 
 
         }
@@ -201,7 +201,7 @@ namespace ImageChopper
             if (e.Button != MouseButtons.Left)
                 return;
             Point tempEndPoint = e.Location;
-            
+
 
             Rect.Location = new Point(
                 Math.Min(RectStartPoint.X, tempEndPoint.X),
@@ -236,7 +236,7 @@ namespace ImageChopper
 
         private void BtnUndo_Click(object sender, EventArgs e)
         {
-           
+
             if (rects.Count == 0)
             {
                 WriteLog("Am  revent la imaginea originala, nu se mai poate face undo!");
@@ -255,7 +255,7 @@ namespace ImageChopper
 
             lblImgInfo.Text = "";
 
-           
+
             lblLog.Text = "";
             lblInfo.Text = "";
             outputFilenameFormat = System.Configuration.ConfigurationSettings.AppSettings["outputFilenameFormat"];
@@ -299,10 +299,10 @@ namespace ImageChopper
 
         private void CmbFile_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+
             if (cmbFile.SelectedItem.ToString() == currentImage.Filename)
                 return;
-           
+
             if (rects.Count > 0)
             {
                 if (MessageBox.Show("Fisierul curent a suferit modificari ce nu au fost salvate care vor fi pierdute! Sigur doriti sa continuati?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
@@ -318,21 +318,21 @@ namespace ImageChopper
 
         private void ResetProcessing()
         {
-             rects = null;
+            rects = null;
             rects = new List<RectangleF>();
-           btnOpen.Enabled = currentImage.HasBeenSaved;
+            btnOpen.Enabled = currentImage.HasBeenSaved;
             if (currentImage.HasBeenSaved)
             {
                 lblImgInfo.Text = currentImage.SaveFilePath;
                 lblImgInfo.BackColor = Color.FromArgb(255, 243, 205);
                 lblImgInfo.ForeColor = Color.FromArgb(204, 0, 0);
-  }
+            }
             else
             {
                 lblImgInfo.Text = currentImage.Filename;
                 lblImgInfo.BackColor = Color.FromArgb(255, 243, 205);
                 lblImgInfo.ForeColor = Color.FromArgb(15, 87, 36);
-                
+
             }
 
 
@@ -371,7 +371,7 @@ namespace ImageChopper
         {
 
             WriteLog("Zoom factor: " + currentImage.ZoomFactor);
-            
+
             var latestImage = MakeImageWithoutRectangles((Bitmap)Image.FromFile(currentImage.Filename));
 
             SizeF newSize = new SizeF(latestImage.Width * currentImage.ZoomFactor,
@@ -381,7 +381,7 @@ namespace ImageChopper
 
             pictureBoxCurrent.Size = Size.Round(newSize);
             pictureBoxCurrent.Image = bmp;
-           
+
         }
 
 
