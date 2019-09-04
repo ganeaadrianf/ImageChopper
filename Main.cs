@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -42,7 +43,7 @@ namespace ImageChopper
         private string outputFilenameFormat = "{0}{1}";
         public static string currentPersonText = string.Empty;
         //private List<Image> intermediaryImages = new List<Image>();
-
+        private Guid guid = Guid.NewGuid();
 
 
         private Bitmap MakeImageWithoutArea(Bitmap source_bm)
@@ -191,7 +192,8 @@ namespace ImageChopper
         private void WriteImageInfo()
         {
             var countSavedImages = images.Where(i => i.HasBeenSaved).Count();
-            lblInfo.Text = String.Format("{0}\nPersoana: {1}\nSalvata: {2}\nSalvata ca: {6}\nZoomFactor: {3}\nTotal imagini: {4}\nImagini procesate: {5}", currentImage.Filename, currentImage.Person, currentImage.HasBeenSaved, zoomFactor, images.Count, countSavedImages, currentImage.SaveFilePath);
+            var filename = currentImage.SaveFilePath != string.Empty ?currentImage.SaveFilePath.Substring(currentImage.SaveFilePath.LastIndexOf("\\")+1,currentImage.SaveFilePath.Length- currentImage.SaveFilePath.LastIndexOf("\\")-1): "";
+            lblInfo.Text = String.Format("{7}\n{0}\nPersoana: {1}\nSalvata: {2}\nSalvata ca: {6}\nZoomFactor: {3}\nTotal imagini: {4}\nImagini procesate: {5}", currentImage.Filename, currentImage.Person, currentImage.HasBeenSaved, zoomFactor, images.Count, countSavedImages, filename,guid);
 
 
         }
@@ -264,7 +266,17 @@ namespace ImageChopper
             peopleFile = System.Configuration.ConfigurationSettings.AppSettings["peopleFile"];
             allowedExtensions = System.Configuration.ConfigurationSettings.AppSettings["allowedExtensions"].Split(new string[] { "," }, 30, StringSplitOptions.RemoveEmptyEntries);
             zoomFactor = float.Parse(System.Configuration.ConfigurationSettings.AppSettings["zoomFactor"]);
+            destFolder = (destFolder.EndsWith("\\") ? destFolder.Substring(destFolder.Length - 1) : destFolder) + guid;
 
+
+
+            try {
+                Directory.CreateDirectory(destFolder);
+            }
+            catch (Exception xcp) {
+                MessageBox.Show("Directorul de output nu a putut fi creat, se va utiliza directorul default!!");
+                destFolder = System.Configuration.ConfigurationSettings.AppSettings["destFolder"];
+            }
             foreach (String file in Directory.GetFiles(srcFolder).Where(file => allowedExtensions.Any(file.ToLower().EndsWith)).ToList())
             {
                 images.Add(new ImageFile(file, string.Empty, zoomFactor));
@@ -293,8 +305,8 @@ namespace ImageChopper
             }
 
             people.Sort();
-            confirmPerson = new ConfirmPerson();
-            //frmPersona.Show();
+            
+            
         }
 
         private void CmbFile_SelectedIndexChanged(object sender, EventArgs e)

@@ -24,6 +24,7 @@ namespace ImageChopper.Classes
             Person = string.Empty;
             Filename = string.Empty;
             ZoomFactor = 1;
+            SaveFilePath = string.Empty;
            
         }
 
@@ -32,7 +33,7 @@ namespace ImageChopper.Classes
         {
 
             Filename = f;
-
+            SaveFilePath = string.Empty;
             Person = p;
             ZoomFactor = z;
         }
