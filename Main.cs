@@ -23,6 +23,8 @@ namespace ImageChopper
         private Brush selectionBrush = new SolidBrush(Color.White);//.FromArgb(128, 72, 145, 220));
 
         private List<RectangleF> rects = new List<RectangleF>();
+
+        private bool forceSave = false;
         public frmMain()
         {
             InitializeComponent();
@@ -389,7 +391,7 @@ namespace ImageChopper
         private void BtnSave_Click(object sender, EventArgs e)
         {
 
-            if (rects.Count > 0)
+            if (rects.Count > 0 || forceSave)
             {
                 confirmPerson = new ConfirmPerson();
 
@@ -407,7 +409,7 @@ namespace ImageChopper
                 return;
             }
 
-
+            forceSave = false;
 
 
 
@@ -504,6 +506,12 @@ namespace ImageChopper
 
             if (keyData == (Keys.S) && imageFocus)
             {
+                btnSave.PerformClick();
+                return true;
+            }
+            if (keyData == (Keys.Multiply) && imageFocus)
+            {
+                forceSave = true;
                 btnSave.PerformClick();
                 return true;
             }
