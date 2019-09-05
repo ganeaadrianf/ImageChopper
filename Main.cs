@@ -520,6 +520,7 @@ namespace ImageChopper
                 return true;
             }
 
+<<<<<<< HEAD
             if (keyData == (Keys.V) && imageFocus)
             {
                 
@@ -541,6 +542,8 @@ namespace ImageChopper
                 return true;
             }
 
+=======
+>>>>>>> 1e806a666b374a0c17d917792176f0b9ac90f8bd
 
 
 
