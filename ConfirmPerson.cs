@@ -50,7 +50,6 @@ namespace ImageChopper
                     frmMain.people.Add(cmbPersoana.Text);
 
                 }
-                frmMain.currentImage.Person = cmbPersoana.Text;
                 frmMain.currentPersonText = cmbPersoana.Text;
                 this.DialogResult = DialogResult.OK;
                 //this.Close();

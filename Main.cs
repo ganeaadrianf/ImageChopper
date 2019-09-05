@@ -420,15 +420,21 @@ namespace ImageChopper
             }
             forceSave = false;
 
+            var filename = string.Empty;
 
-
-
-            int imageIndex = images.Where(i => i.Person == currentImage.Person && i.Filename != currentImage.Filename).Count() + 1;
-            var filename = string.Format(@"{0}\{1}", destFolder, string.Format(outputFilenameFormat, currentImage.Person, imageIndex));
-
-            if (currentImage.HasBeenSaved && currentImage.Person == currentPersonText) {//trebuie sa salvez acelasi fisier
-                filename = currentImage.SaveFilePath;
+            if (currentPersonText == currentImage.Person && currentImage.HasBeenSaved)
+            {
+                filename = currentImage.SaveFilePath;//trebuie sa salvez acelasi fisier
+                
             }
+            else
+            {
+                currentImage.Person = currentPersonText;
+                int imageIndex = images.Where(i => i.Person == currentImage.Person && i.Filename != currentImage.Filename).Count() + 1;
+                filename = string.Format(@"{0}\{1}", destFolder, string.Format(outputFilenameFormat, currentImage.Person, imageIndex));
+
+            }
+
             
             if (currentImage.HasBeenSaved)
             {
@@ -632,8 +638,8 @@ namespace ImageChopper
             var processed = images.Where(i => i.HasBeenSaved).Count();
             if (all - processed > 0)
             {
-                MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!", all - processed));
-                e.Cancel=true;
+               // MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!", all - processed));
+                //e.Cancel=true;
             }
         }
     }
