@@ -192,8 +192,8 @@ namespace ImageChopper
         private void WriteImageInfo()
         {
             var countSavedImages = images.Where(i => i.HasBeenSaved).Count();
-            var filename = currentImage.SaveFilePath != string.Empty ?currentImage.SaveFilePath.Substring(currentImage.SaveFilePath.LastIndexOf("\\")+1,currentImage.SaveFilePath.Length- currentImage.SaveFilePath.LastIndexOf("\\")-1): "";
-            lblInfo.Text = String.Format("{7}\n{0}\nPersoana: {1}\nSalvata: {2}\nSalvata ca: {6}\nZoomFactor: {3}\nTotal imagini: {4}\nImagini procesate: {5}", currentImage.Filename, currentImage.Person, currentImage.HasBeenSaved, zoomFactor, images.Count, countSavedImages, filename,guid);
+            var filename = currentImage.SaveFilePath != string.Empty ? currentImage.SaveFilePath.Substring(currentImage.SaveFilePath.LastIndexOf("\\") + 1, currentImage.SaveFilePath.Length - currentImage.SaveFilePath.LastIndexOf("\\") - 1) : "";
+            lblInfo.Text = String.Format("{7}\n{0}\nPersoana: {1}\nSalvata: {2}\nSalvata ca: {6}\nZoomFactor: {3}\nTotal imagini: {4}\nImagini procesate: {5}", currentImage.Filename, currentImage.Person, currentImage.HasBeenSaved, zoomFactor, images.Count, countSavedImages, filename, guid);
 
 
         }
@@ -270,10 +270,12 @@ namespace ImageChopper
 
 
 
-            try {
+            try
+            {
                 Directory.CreateDirectory(destFolder);
             }
-            catch (Exception xcp) {
+            catch (Exception xcp)
+            {
                 MessageBox.Show("Directorul de output nu a putut fi creat, se va utiliza directorul default!!");
                 destFolder = System.Configuration.ConfigurationSettings.AppSettings["destFolder"];
             }
@@ -305,8 +307,8 @@ namespace ImageChopper
             }
 
             people.Sort();
-            
-            
+
+
         }
 
         private void CmbFile_SelectedIndexChanged(object sender, EventArgs e)
@@ -425,7 +427,7 @@ namespace ImageChopper
             if (currentPersonText == currentImage.Person && currentImage.HasBeenSaved)
             {
                 filename = currentImage.SaveFilePath;//trebuie sa salvez acelasi fisier
-                
+
             }
             else
             {
@@ -435,7 +437,7 @@ namespace ImageChopper
 
             }
 
-            
+
             if (currentImage.HasBeenSaved)
             {
                 if (MessageBox.Show("Imaginea a fost deja procesata si e posibil sa fie suprascrisa! Sigur doriti sa continuati?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
@@ -452,10 +454,12 @@ namespace ImageChopper
             currentImage.SaveFilePath = filename;
             currentImage.HasBeenSaved = true;
 
-            try {
+            try
+            {
                 var processed = images.Where(i => i.HasBeenSaved).Count();
                 var imgCount = Directory.EnumerateFiles(destFolder, "*.jpg").Count();
-                if (processed != imgCount) {
+                if (processed != imgCount)
+                {
                     MessageBox.Show(string.Format("Aveti erori de validare:\nFisiere raportate ca fiind salvate: {0}\nFisiere din folderul destinatie: {1}",
                         processed,
                         imgCount
@@ -464,7 +468,9 @@ namespace ImageChopper
                         );
                 }
 
-            } catch (Exception xcp) {
+            }
+            catch (Exception xcp)
+            {
                 MessageBox.Show("Eroare mecanism validare, e posibil ca numarul de imagini raportate ca fiind salvate sa difere de numarul de imagini din folderul destinatie!\nPuteti continua dar e recomandat sa verificati folderul destinatie!");
             }
 
@@ -559,9 +565,9 @@ namespace ImageChopper
 
             if (keyData == (Keys.V) && imageFocus)
             {
-                
-                var people=images.Where(i => i.HasBeenSaved).Distinct().Select(p=>p.Person).ToList();
-                var outFile= destFolder + @"\lucru.txt";
+
+                var people = images.Where(i => i.HasBeenSaved).Distinct().Select(p => p.Person).ToList();
+                var outFile = destFolder + @"\lucru.txt";
                 try
                 {
                     using (TextWriter tw = new StreamWriter(outFile))
@@ -572,8 +578,9 @@ namespace ImageChopper
                     MessageBox.Show("Fisierul a fost salvat ca: " + outFile);
                     System.Diagnostics.Process.Start(outFile);
                 }
-                catch (Exception xcp) {
-                    MessageBox.Show("Fisierul nu a fost salvat! "+xcp.ToString() );
+                catch (Exception xcp)
+                {
+                    MessageBox.Show("Fisierul nu a fost salvat! " + xcp.ToString());
 
                 }
                 return true;
@@ -638,9 +645,9 @@ namespace ImageChopper
             var processed = images.Where(i => i.HasBeenSaved).Count();
             if (all - processed > 0)
             {
-               // MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!", all - processed));
-                //e.Cancel=true;
+                MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!", all - processed));
+                e.Cancel = true;
             }
         }
     }
-    }
+}
