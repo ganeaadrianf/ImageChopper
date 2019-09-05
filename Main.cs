@@ -431,6 +431,15 @@ namespace ImageChopper
             }
             else
             {
+                //sterg fisierul vechi
+                try
+                {
+                    File.Delete(currentImage.SaveFilePath);
+                }
+                catch (Exception xcp)
+                {
+                    WriteLog("nu s-a sters fisierul vechi!");
+                }
                 currentImage.Person = currentPersonText;
                 int imageIndex = images.Where(i => i.Person == currentImage.Person && i.Filename != currentImage.Filename).Count() + 1;
                 filename = string.Format(@"{0}\{1}", destFolder, string.Format(outputFilenameFormat, currentImage.Person, imageIndex));
