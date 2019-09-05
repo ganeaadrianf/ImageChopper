@@ -426,18 +426,41 @@ namespace ImageChopper
             int imageIndex = images.Where(i => i.Person == currentImage.Person && i.Filename != currentImage.Filename).Count() + 1;
             var filename = string.Format(@"{0}\{1}", destFolder, string.Format(outputFilenameFormat, currentImage.Person, imageIndex));
 
+            if (currentImage.HasBeenSaved && currentImage.Person == currentPersonText) {//trebuie sa salvez acelasi fisier
+                filename = currentImage.SaveFilePath;
+            }
+            
             if (currentImage.HasBeenSaved)
             {
-                if (MessageBox.Show("Imaginea exista deja si va fi suprascrisa! Sigur doriti sa continuati?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
+                if (MessageBox.Show("Imaginea a fost deja procesata si e posibil sa fie suprascrisa! Sigur doriti sa continuati?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.No)
                 {
                     return;
 
                 }
             }
-            MakeImageWithoutRectangles((Bitmap)Image.FromFile(currentImage.Filename)).Save(filename);
+            var img = (Bitmap)Image.FromFile(currentImage.Filename);
+            var newImg = MakeImageWithoutRectangles(img);
+
+            newImg.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
             WriteLog("Salvare cu succes! " + filename);
             currentImage.SaveFilePath = filename;
             currentImage.HasBeenSaved = true;
+
+            try {
+                var processed = images.Where(i => i.HasBeenSaved).Count();
+                var imgCount = Directory.EnumerateFiles(destFolder, "*.jpg").Count();
+                if (processed != imgCount) {
+                    MessageBox.Show(string.Format("Aveti erori de validare:\nFisiere raportate ca fiind salvate: {0}\nFisiere din folderul destinatie: {1}",
+                        processed,
+                        imgCount
+
+                        )
+                        );
+                }
+
+            } catch (Exception xcp) {
+                MessageBox.Show("Eroare mecanism validare, e posibil ca numarul de imagini raportate ca fiind salvate sa difere de numarul de imagini din folderul destinatie!\nPuteti continua dar e recomandat sa verificati folderul destinatie!");
+            }
 
         }
 
@@ -600,11 +623,18 @@ namespace ImageChopper
             }
 
         }
+
+
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var all = images.Count();
+            var processed = images.Where(i => i.HasBeenSaved).Count();
+            if (all - processed > 0)
+            {
+                MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!", all - processed));
+                e.Cancel=true;
+            }
+        }
     }
-
-
-
-
-
-
-}
+    }

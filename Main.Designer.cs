@@ -241,11 +241,7 @@
             this.lblLog.AutoSize = true;
             this.lblLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLog.ForeColor = System.Drawing.Color.DarkSlateGray;
-
-            this.lblLog.Location = new System.Drawing.Point(6, 364);
-
             this.lblLog.Location = new System.Drawing.Point(13, 312);
-
             this.lblLog.Name = "lblLog";
             this.lblLog.Size = new System.Drawing.Size(30, 17);
             this.lblLog.TabIndex = 1;
@@ -262,6 +258,7 @@
             this.Name = "frmMain";
             this.Text = "Image Chopper";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCurrent)).EndInit();
             this.splitContainerFirst.Panel1.ResumeLayout(false);
