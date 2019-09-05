@@ -241,11 +241,11 @@
             this.lblLog.AutoSize = true;
             this.lblLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblLog.ForeColor = System.Drawing.Color.DarkSlateGray;
-<<<<<<< HEAD
+
             this.lblLog.Location = new System.Drawing.Point(6, 364);
-=======
+
             this.lblLog.Location = new System.Drawing.Point(13, 312);
->>>>>>> 1e806a666b374a0c17d917792176f0b9ac90f8bd
+
             this.lblLog.Name = "lblLog";
             this.lblLog.Size = new System.Drawing.Size(30, 17);
             this.lblLog.TabIndex = 1;

@@ -45,7 +45,7 @@ namespace ImageChopper
         //private List<Image> intermediaryImages = new List<Image>();
         private Guid guid = Guid.NewGuid();
 
-
+        private bool forceSave = false;
         private Bitmap MakeImageWithoutArea(Bitmap source_bm)
         {
 
@@ -401,7 +401,7 @@ namespace ImageChopper
         private void BtnSave_Click(object sender, EventArgs e)
         {
 
-            if (rects.Count > 0)
+            if (rects.Count > 0 || forceSave)
             {
                 confirmPerson = new ConfirmPerson();
 
@@ -418,7 +418,7 @@ namespace ImageChopper
             {
                 return;
             }
-
+            forceSave = false;
 
 
 
@@ -520,7 +520,14 @@ namespace ImageChopper
                 return true;
             }
 
-<<<<<<< HEAD
+            if (keyData == (Keys.Multiply) && imageFocus)
+            {
+                forceSave = true;
+                btnSave.PerformClick();
+                return true;
+            }
+
+
             if (keyData == (Keys.V) && imageFocus)
             {
                 
@@ -541,9 +548,6 @@ namespace ImageChopper
                 }
                 return true;
             }
-
-=======
->>>>>>> 1e806a666b374a0c17d917792176f0b9ac90f8bd
 
 
 
