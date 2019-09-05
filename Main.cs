@@ -541,6 +541,7 @@ namespace ImageChopper
                             tw.WriteLine(s);
                     }
                     MessageBox.Show("Fisierul a fost salvat ca: " + outFile);
+                    System.Diagnostics.Process.Start(outFile);
                 }
                 catch (Exception xcp) {
                     MessageBox.Show("Fisierul nu a fost salvat! "+xcp.ToString() );
