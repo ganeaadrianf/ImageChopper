@@ -431,6 +431,14 @@ namespace ImageChopper
             }
             else
             {
+                currentImage.Person = currentPersonText;
+                int imageIndex = images.Where(i => i.Person == currentImage.Person && i.Filename != currentImage.Filename).Count() + 1;
+                filename = string.Format(@"{0}\{1}", destFolder, string.Format(outputFilenameFormat, currentImage.Person, imageIndex));
+                if (File.Exists(filename))
+                {
+                    MessageBox.Show("Fisierul " + filename + " exista deja! Pentru a evita suprascrierea fisierul curent nu va fi salvat!\nAlegeti alt nume!");
+                        return;
+                }
                 //sterg fisierul vechi
                 try
                 {
@@ -440,9 +448,6 @@ namespace ImageChopper
                 {
                     WriteLog("nu s-a sters fisierul vechi!");
                 }
-                currentImage.Person = currentPersonText;
-                int imageIndex = images.Where(i => i.Person == currentImage.Person && i.Filename != currentImage.Filename).Count() + 1;
-                filename = string.Format(@"{0}\{1}", destFolder, string.Format(outputFilenameFormat, currentImage.Person, imageIndex));
 
             }
 
