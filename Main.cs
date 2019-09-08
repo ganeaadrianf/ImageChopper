@@ -577,32 +577,36 @@ namespace ImageChopper
             }
 
 
-            if (keyData == (Keys.V) && imageFocus)
+            if (keyData == (Keys.P) && imageFocus)
             {
-
-                var people = images.Where(i => i.HasBeenSaved).Distinct().Select(p => p.Person).ToList();
-                var outFile = destFolder + @"\lucru.txt";
-                try
-                {
-                    using (TextWriter tw = new StreamWriter(outFile))
-                    {
-                        foreach (String s in people)
-                            tw.WriteLine(s);
-                    }
-                    MessageBox.Show("Fisierul a fost salvat ca: " + outFile);
-                    System.Diagnostics.Process.Start(outFile);
-                }
-                catch (Exception xcp)
-                {
-                    MessageBox.Show("Fisierul nu a fost salvat! " + xcp.ToString());
-
-                }
+                SaveProgressInfo();
                 return true;
             }
 
 
 
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void SaveProgressInfo()
+        {
+            var people = images.Where(i => i.HasBeenSaved).Select(p => p.Person).ToList().Distinct();
+            var outFile = destFolder + @"\lucru.txt";
+            try
+            {
+                using (TextWriter tw = new StreamWriter(outFile))
+                {
+                    foreach (String s in people)
+                        tw.WriteLine(s);
+                }
+                MessageBox.Show("Fisierul de output a fost salvat ca: " + outFile);
+                System.Diagnostics.Process.Start(outFile);
+            }
+            catch (Exception xcp)
+            {
+                MessageBox.Show("Fisierul nu a fost salvat! " + xcp.ToString());
+
+            }
         }
 
         private int GetIndexFocusedControl()
@@ -659,8 +663,20 @@ namespace ImageChopper
             var processed = images.Where(i => i.HasBeenSaved).Count();
             if (all - processed > 0)
             {
-                MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!", all - processed));
-                e.Cancel = true;
+                if (MessageBox.Show(string.Format("Nu ati procesat {0} fisiere!!!\nDaca alegeti sa inchideti aplicatia, se va pierde asocierea dintre imaginile procesate si persoane!", all - processed)
+                  , "Doriti sa inchideti aplicatia?", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    SaveProgressInfo();
+
+
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+            }
+            else {
+                SaveProgressInfo();
             }
         }
     }
