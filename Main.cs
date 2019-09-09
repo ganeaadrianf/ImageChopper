@@ -247,7 +247,7 @@ namespace ImageChopper
             }
             //remove current rect
             rects.RemoveAt(rects.Count - 1);
-
+            //current size
             ZoomImage();
 
         }
