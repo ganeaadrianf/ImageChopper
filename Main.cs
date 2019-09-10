@@ -268,30 +268,38 @@ namespace ImageChopper
             zoomFactor = float.Parse(System.Configuration.ConfigurationSettings.AppSettings["zoomFactor"]);
             destFolder = (destFolder.EndsWith("\\") ? destFolder.Substring(destFolder.Length - 1) : destFolder) + guid;
 
-
+            WriteLog("Read config values");
 
             try
             {
                 Directory.CreateDirectory(destFolder);
+                WriteLog("Created output dir");
             }
             catch (Exception xcp)
             {
                 MessageBox.Show("Directorul de output nu a putut fi creat, se va utiliza directorul default!!");
                 destFolder = System.Configuration.ConfigurationSettings.AppSettings["destFolder"];
             }
+            WriteLog("Looping through images");
             foreach (String file in Directory.GetFiles(srcFolder).Where(file => allowedExtensions.Any(file.ToLower().EndsWith)).ToList())
             {
                 images.Add(new ImageFile(file, string.Empty, zoomFactor));
                 cmbFile.Items.Add(file);
             }
-            foreach (string person in File.ReadAllLines(peopleFile))
+            WriteLog("Finished looping");
+            WriteLog("Check if file exists");
+            if (File.Exists(peopleFile))
             {
-                people.Add(person);
+                WriteLog("File exists");
+                foreach (string person in File.ReadAllLines(peopleFile))
+                {
+                    people.Add(person);
+                }
             }
-
+            WriteLog("Check if there are any images");
             if (images.Count > 0)
             {
-
+                WriteLog("Display first image");
                 currentImage = images[0];
 
                 ResetProcessing();
@@ -300,12 +308,13 @@ namespace ImageChopper
             }
             else
             {
+                WriteLog("No image found");
                 btnNextFile.Enabled = false;
                 btnPrevFile.Enabled = false;
                 btnSave.Enabled = false;
                 cmbFile.Enabled = false;
             }
-
+            WriteLog("Sorting people");
             people.Sort();
 
 
@@ -332,6 +341,7 @@ namespace ImageChopper
 
         private void ResetProcessing()
         {
+            WriteLog("Enter reset processing");
             rects = null;
             rects = new List<RectangleF>();
             btnOpen.Enabled = currentImage.HasBeenSaved;
@@ -349,7 +359,7 @@ namespace ImageChopper
 
             }
 
-
+            WriteLog("Exit reset processing");
 
 
 
@@ -395,6 +405,7 @@ namespace ImageChopper
 
             pictureBoxCurrent.Size = Size.Round(newSize);
             pictureBoxCurrent.Image = bmp;
+            WriteLog("Exit zoom function");
 
         }
 
@@ -437,7 +448,7 @@ namespace ImageChopper
                 if (File.Exists(filename))
                 {
                     MessageBox.Show("Fisierul " + filename + " exista deja! Pentru a evita suprascrierea fisierul curent nu va fi salvat!\nAlegeti alt nume!");
-                        return;
+                    return;
                 }
                 //sterg fisierul vechi
                 try
@@ -675,7 +686,8 @@ namespace ImageChopper
                     e.Cancel = true;
                 }
             }
-            else {
+            else
+            {
                 SaveProgressInfo();
             }
         }
