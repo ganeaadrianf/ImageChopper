@@ -176,16 +176,23 @@ namespace ImageChopper
 
         private void PictureBoxSrc_MouseUp(object sender, MouseEventArgs e)
         {
-            btnUndo.Enabled = true;
+            try
+            {
+                btnUndo.Enabled = true;
 
-            // Make the image without the area.
-            Bitmap without_area_bitmap =
-                MakeImageWithoutArea((Bitmap)pictureBoxCurrent.Image);
-            pictureBoxCurrent.Image = MakeSampleImage(without_area_bitmap);
-            without_area_bitmap = null;
+                // Make the image without the area.
+                Bitmap without_area_bitmap =
+                    MakeImageWithoutArea((Bitmap)pictureBoxCurrent.Image);
+                pictureBoxCurrent.Image = MakeSampleImage(without_area_bitmap);
+                without_area_bitmap = null;
 
-            SaveZoomedRectangle();
-            WriteImageInfo();
+                SaveZoomedRectangle();
+                WriteImageInfo();
+            }
+            catch (Exception xcp) {
+                MessageBox.Show("Eroare la selectarea dreptunghiului!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            
 
         }
 
@@ -221,19 +228,26 @@ namespace ImageChopper
         private void PictureBoxSrc_Paint(object sender, PaintEventArgs e)
         {
             // Draw the rectangle...
-            if (pictureBoxCurrent.Image != null)
-
+            try
             {
-                if (Rect != null && Rect.Width > 0 && Rect.Height > 0)
+                if (pictureBoxCurrent.Image != null)
+
                 {
-                    var zoomedRect = new Rectangle(new Point(
-                        Convert.ToInt32(Rect.X * currentImage.ZoomFactor),
-                        Convert.ToInt32(Rect.Y * currentImage.ZoomFactor)
-                        ), new Size(Convert.ToInt32(Rect.Size.Width * currentImage.ZoomFactor),
-                        Convert.ToInt32((Rect.Size.Height * currentImage.ZoomFactor))));
-                    e.Graphics.FillRectangle(selectionBrush, Rect);
+                    if (Rect != null && Rect.Width > 0 && Rect.Height > 0)
+                    {
+                        var zoomedRect = new Rectangle(new Point(
+                            Convert.ToInt32(Rect.X * currentImage.ZoomFactor),
+                            Convert.ToInt32(Rect.Y * currentImage.ZoomFactor)
+                            ), new Size(Convert.ToInt32(Rect.Size.Width * currentImage.ZoomFactor),
+                            Convert.ToInt32((Rect.Size.Height * currentImage.ZoomFactor))));
+                        e.Graphics.FillRectangle(selectionBrush, Rect);
+                    }
                 }
             }
+            catch (Exception xcp) {
+                MessageBox.Show("Eroare la reincarcarea imaginii " + xcp.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void BtnUndo_Click(object sender, EventArgs e)
@@ -300,9 +314,9 @@ namespace ImageChopper
             if (images.Count > 0)
             {
                 WriteLog("Display first image");
-                currentImage = images[0];
+                //currentImage = images[0];
 
-                ResetProcessing();
+                //ResetProcessing();
 
 
             }
@@ -508,6 +522,14 @@ namespace ImageChopper
 
         private void BtnPrevFile_Click(object sender, EventArgs e)
         {
+            if (currentImage == null)
+            {
+                try
+                {
+                    currentImage = images[0];
+                }
+                catch (Exception) { return; }
+            }
             SaveImage();
             var currIndex = images.IndexOf(currentImage);
 
@@ -527,7 +549,13 @@ namespace ImageChopper
 
         private void BtnNextFile_Click(object sender, EventArgs e)
         {
-
+            if (currentImage == null) {
+                try
+                {
+                    currentImage = images[images.Count-1];
+                }
+                catch (Exception) { return; }
+            }
 
             SaveImage();
             var currIndex = images.IndexOf(currentImage);
