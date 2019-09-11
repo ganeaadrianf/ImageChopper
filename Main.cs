@@ -412,7 +412,10 @@ namespace ImageChopper
 
             WriteLog("Zoom factor: " + currentImage.ZoomFactor);
 
-            var latestImage = MakeImageWithoutRectangles((Bitmap)Image.FromFile(currentImage.Filename));
+            var latestImage = MakeImageWithoutRectangles(
+                //(Bitmap)Image.FromFile(currentImage.Filename)
+                ReadBitmapFromFile(currentImage.Filename)
+                );
 
             SizeF newSize = new SizeF(latestImage.Width * currentImage.ZoomFactor,
                 latestImage.Height * currentImage.ZoomFactor);
@@ -487,7 +490,8 @@ namespace ImageChopper
 
                 }
             }
-            var img = (Bitmap)Image.FromFile(currentImage.Filename);
+            var img = ReadBitmapFromFile(currentImage.Filename);
+                //(Bitmap)Image.FromFile(currentImage.Filename);
             var newImg = MakeImageWithoutRectangles(img);
 
             newImg.Save(filename, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -704,7 +708,16 @@ namespace ImageChopper
 
         }
 
-
+        Bitmap ReadBitmapFromFile(String s_Path)
+        {
+            using (FileStream i_Stream = new FileStream(s_Path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (Bitmap i_Bmp = new Bitmap(i_Stream))
+                {
+                    return new Bitmap(i_Bmp);
+                }
+            }
+        }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
