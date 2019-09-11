@@ -189,10 +189,11 @@ namespace ImageChopper
                 SaveZoomedRectangle();
                 WriteImageInfo();
             }
-            catch (Exception xcp) {
+            catch (Exception xcp)
+            {
                 MessageBox.Show("Eroare la selectarea dreptunghiului!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
 
         }
 
@@ -244,7 +245,8 @@ namespace ImageChopper
                     }
                 }
             }
-            catch (Exception xcp) {
+            catch (Exception xcp)
+            {
                 MessageBox.Show("Eroare la reincarcarea imaginii " + xcp.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -336,9 +338,9 @@ namespace ImageChopper
 
         private void CmbFile_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-            if (cmbFile.SelectedItem.ToString() == currentImage.Filename)
-                return;
+            if (currentImage != null)
+                if (cmbFile.SelectedItem.ToString() == currentImage.Filename)
+                    return;
 
             if (rects.Count > 0)
             {
@@ -549,10 +551,11 @@ namespace ImageChopper
 
         private void BtnNextFile_Click(object sender, EventArgs e)
         {
-            if (currentImage == null) {
+            if (currentImage == null)
+            {
                 try
                 {
-                    currentImage = images[images.Count-1];
+                    currentImage = images[images.Count - 1];
                 }
                 catch (Exception) { return; }
             }
