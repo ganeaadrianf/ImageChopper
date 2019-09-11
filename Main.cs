@@ -589,32 +589,39 @@ namespace ImageChopper
 
             if (keyData == (Keys.Add) && imageFocus)
             {
-                btnZoomIn.PerformClick();
+                if (currentImage != null)
+                    btnZoomIn.PerformClick();
                 return true;
             }
 
             if (keyData == (Keys.Subtract) && imageFocus)
             {
-                btnZoomOut.PerformClick();
+                if (currentImage != null)
+                    btnZoomOut.PerformClick();
                 return true;
             }
 
             if (keyData == (Keys.Z) && imageFocus)
             {
-                btnUndo.PerformClick();
+                if (currentImage != null)
+                    btnUndo.PerformClick();
                 return true;
             }
 
             if (keyData == (Keys.S) && imageFocus)
             {
-                btnSave.PerformClick();
+                if (currentImage != null)
+                    btnSave.PerformClick();
                 return true;
             }
 
             if (keyData == (Keys.Multiply) && imageFocus)
             {
-                forceSave = true;
-                btnSave.PerformClick();
+                if (currentImage != null)
+                {
+                    forceSave = true;
+                    btnSave.PerformClick();
+                }
                 return true;
             }
 
